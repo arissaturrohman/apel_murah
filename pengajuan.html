@@ -30,13 +30,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pelayanan</a>
+                        <a class="nav-link" href="pengajuan.html">Pelayanan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Riwayat</a>
+                        <a class="nav-link" href="riwayat.html">Riwayat</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
@@ -81,12 +81,20 @@
                                                 class="form-control">
                                         </div>
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-4">
+
+                                                <label for="jk">Jenis Kelamin</label>
+                                                <select name="jk" id="jk" class="form-control">
+                                                    <option value="">-</option>
+                                                    <option value="">Laki-laki</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-4">
                                                 <label for="lahir">Tempat Lahir</label>
                                                 <input type="text" name="lahir" id="lahir" placeholder=""
                                                     class="form-control">
                                             </div>
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-4">
                                                 <label for="username">Tanggal Lahir</label>
                                                 <input type="date" name="tgl_lahir " id="tgl_lahir" placeholder=""
                                                     class="form-control">
@@ -118,7 +126,8 @@
 
                                 </div>
                                 <div class="col-lg-5 d-none d-lg-block">
-                                    <img src="assets/img/pengajuan.png" alt="pengajuan" width="70%" class="float-right">
+                                    <img src="assets/img/pengajuan.png" alt="pengajuan" width="70%"
+                                        class="float-right mr-5">
                                 </div>
                             </div>
                         </div>
@@ -143,7 +152,7 @@
             <div class="row">
 
                 <!-- Grid column -->
-                <div class="col-md-6 mt-md-0 mt-3">
+                <div class="col-md-8 mt-md-0 mt-3">
 
                     <!-- Content -->
                     <h5 class="text-uppercase">Footer Content</h5>
@@ -176,7 +185,7 @@
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-3 mb-md-0 mb-3 offset-3">
+                <div class="col-md-4 mb-md-0 mb-3">
 
                     <!-- Links -->
                     <h5 class="text-uppercase">Tentang</h5>
