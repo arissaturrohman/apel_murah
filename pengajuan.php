@@ -18,37 +18,7 @@
 
 <body id="page-top">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-
-            <a class="navbar-brand" href="#">Appel Sukodono</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pengajuan.html">Pelayanan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="riwayat.html">Riwayat</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-outline-secondary" data-toggle="modal" data-target="#modalLoginForm"
-                            href="#">Login</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+    <?php include('inc/menu.php'); ?>
     <main role="main">
 
         <!--Form Pelayanan -->
@@ -290,17 +260,4 @@
         </div>
     </div>
 
-
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="assets/vendor/jquery/jquery.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="assets/js/sb-admin-2.min.js"></script>
-</body>
-
-</html>
+<?php include('inc/footer.php'); ?>

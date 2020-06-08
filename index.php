@@ -1,3 +1,30 @@
+ <?php 
+
+include('inc/config.php');
+
+if (isset($_POST["login"])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $query = $conn->query("SELECT * FROM tb_user WHERE username='$username'");
+
+    //cek username
+    if (mysqli_num_rows($query) > 0) {
+        
+        //cek password
+        $row = mysqli_fetch_assoc($query);
+        if (password_verify($password, $row["password"])) {
+            
+            header('location:admin/index.php');
+            exit;
+        }
+    }
+
+    $error = true;
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -18,37 +45,8 @@
 
 <body id="page-top">
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-
-      <a class="navbar-brand" href="#">Appel Sukodono</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pengajuan.html">Pelayanan</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="riwayat.html">Riwayat</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link btn btn-outline-secondary" data-toggle="modal" data-target="#modalLoginForm"
-              href="#">Login</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
+<?php include('inc/menu.php'); ?>
+ 
   <main role="main">
 
     <!--Form Pelayanan -->
@@ -214,27 +212,6 @@
 
         <hr class="clearfix w-100 d-md-none pb-3">
 
-
-        <!-- <div class="col-md-3 mb-md-0 mb-3">
-
-        
-          <h5 class="text-uppercase">Links</h5>
-
-          <ul class="list-unstyled">
-            <li>
-              <a href="#">Home</a>
-            </li>
-            <li>
-              <a href="#!">Pelayanan</a>
-            </li>
-            <li>
-              <a href="#!">Riwayat</a>
-            </li>
-          </ul>
-
-        </div> -->
-        <!-- Grid column -->
-
         <!-- Grid column -->
         <div class="col-md-4 mb-md-0 mb-3">
 
@@ -268,40 +245,6 @@
     <!-- Copyright -->
 
   </footer>
-  <!-- Footer -->
-
-  <!-- FOOTER
-  <footer class="sticky-footer bg-dark">
-    <div class="container">
-      <p class="text-white-50 mt-1">&copy; 2017-2020 Pemerintah Desa Sukodono &middot; <a href="#">Privacy</a>
-        &middot; <a href="#">Terms</a></p>
-    </div>
-    <p class="float-right text-white"><a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-      </a></p>
-  </footer> -->
-
-  <!-- Modal -->
-  <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="text-center modal-header">
-          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Login</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer text-center d-flex justify-content-center">
-          <button type="button" class="btn btn-outline-secondary">Login</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
 
   <!--Modal1-->
 
@@ -315,42 +258,31 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <?php if(isset($error)): ?>
+          <p style="color:red; font-style:italic; text-align:center">Username / Password salah</p>
+        <?php endif; ?>
         <div class="modal-body mx-3 mb-4">
-          <form action="" class="user">
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
+          <form class="user" method="POST">
+            <div class="form-group">
+              <!-- <div class="input-group-prepend">
                 <i class="fas fa-envelope input-group-text grey-text pt-3"></i>
-              </div>
-              <input type="text" class="form-control form-control-user" placeholder="Username">
+              </div> -->
+              <input type="text" class="form-control form-control-user" placeholder="Username" name="username">
             </div>
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
+            <div class="form-group">
+              <!-- <div class="input-group-prepend">
                 <i class="fas fa-lock input-group-text grey-text pt-3"></i>
-              </div>
-              <input type="password" class="form-control form-control-user" placeholder="Password">
+              </div> -->
+              <input type="password" class="form-control form-control-user" placeholder="Password" name="password">
             </div>
             <hr><br>
-            <button class="btn btn-dark btn-user btn-block">Login</button>
-          </form>
+            <button type="submit" name="login" class="btn btn-dark btn-user btn-block">Login</button>
+          
         </div>
-        <!-- <div class="modal-footer d-flex justify-content-center">
-          <button class="btn btn-dark btn-user p-2">Login</button>
-        </div> -->
       </div>
     </div>
   </div>
 
+  <?php include('inc/footer.php'); ?>
 
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="assets/vendor/jquery/jquery.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="assets/js/sb-admin-2.min.js"></script>
-</body>
-
-</html>
