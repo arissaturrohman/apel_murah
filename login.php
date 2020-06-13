@@ -50,7 +50,7 @@ if (isset($_POST["login"])) {
     <form action="" method="POST">
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" placeholder="Username" class="form-control">
+            <input type="text" name="username" id="username" placeholder="Username" class="form-control" autofocus>
         </div>
         <div class="form-group">
             <label for="password">Password</label>

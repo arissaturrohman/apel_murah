@@ -4,7 +4,7 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>No</th>
@@ -58,12 +58,19 @@
                       <td><?= $data['desa']; ?></td>
                       <td><?= $data['kode_pos']; ?></td>
                       <td>
-                        <a href="#" class="btn btn-success btn-circle btn-sm" title="edit" data-toggle="modal" data-target="#modalUbahForm<?= $data['id_warga'];?>">
+                        <a href="#" class="btn btn-success btn-circle btn-sm" title="edit" data-toggle="modal" data-target="#modalUbahForm<?= $data['id_warga']?>">
                         <i class="fas fa-edit"></i>
                         </a>
-                      <a href="#" class="btn btn-danger btn-circle btn-sm" title="hapus">
+
+                       <form method="POST">
+                          
+                      <input type="hidden" class="form-control " name="id_warga" value="<?= $data['id_warga']?>">
+
+                      <button onclick="return confirm('Yakin menghapus data ini..?')" type="submit" name="hapus" class="btn btn-danger btn-circle btn-sm" title="hapus">
                         <i class="fas fa-trash"></i>
-                      </a>
+                      </button>
+                      </form>
+
                       </td>
                     </tr>
 
@@ -73,20 +80,18 @@
                 <div class="modal-content">
                   <div class="modal-header text-center">
                     <h4 class="modal-title w-100 font-weight-bold">Form Ubah Penduduk</h4>
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button> -->
+                   
                   </div>
                   <div class="modal-body mx-3 mb-4">                  
                   
                     <form class="user" method="POST">
 
-                      <?php 
-                  $id_warga = $data['id_warga'];
-                  $sql_ubah = $conn->query("SELECT * FROM tb_penduduk WHERE id_warga='$id_warga'");
-                  while ($data_ubah=$sql_ubah->fetch_assoc()) {
-                  
-                  ?>
+                    <?php 
+                    $id_warga = $data['id_warga'];
+                    $sql_ubah = $conn->query("SELECT * FROM tb_penduduk WHERE id_warga='$id_warga'");
+                    while ($data_ubah=$sql_ubah->fetch_assoc()) {
+                    
+                    ?>
                   
                     <div class="form-group">
                     <input type="hidden" class="form-control " name="id_warga" value="<?= $data_ubah['id_warga']?>">
@@ -178,7 +183,7 @@
                       </div>
                       <hr><br>
                       <button type="submit" name="ubah" class="btn btn-info btn-user btn-block">Submit</button>
-                    
+                    </form>
                   </div>
                 <?php 
                 
@@ -405,6 +410,24 @@
             }
 
 
+            ?>
+
+            
+            <?php 
+              if (isset($_POST['hapus'])) {
+                 $id_warga_hapus = $_POST['id_warga'];
+
+                 $hapus = $conn->query("DELETE FROM tb_penduduk WHERE id_warga='$id_warga_hapus'");
+
+                if ($hapus) {
+                    ?>
+                   <script>
+                     alert("Data berhasil dihapus");
+                     window.location.href="?page=penduduk";
+                   </script>
+                  <?php
+                    }
+                  }
             ?>
 
 
