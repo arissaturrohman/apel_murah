@@ -1,3 +1,47 @@
+<?php 
+
+session_start();
+include('inc/config.php');
+
+error_reporting(E_ALL ^(E_NOTICE | E_WARNING));
+
+if (isset($_POST["login"])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $query = $conn->query("SELECT * FROM tb_user WHERE username='$username'");
+
+    //cek username
+    if (mysqli_num_rows($query) > 0) {
+        
+        //cek password
+        $row = mysqli_fetch_assoc($query);
+        if (password_verify($password, $row["password"])) {
+            
+            $_SESSION['login'] = true;
+          if ($row['level'] == "petugas") {
+            $_SESSION['username'] = $username;
+            $_SESSION['nama'] = $row['nama'];
+            $_SESSION['level'] = "petugas";
+            
+            header('location:admin/index.php');
+            exit;
+          } elseif ($row['level'] == "admin") {
+            $_SESSION['username'] = $username;
+            $_SESSION['nama'] = $row['nama'];
+            $_SESSION['level'] = "admin";
+                      
+            header('location:admin/index.php');
+            exit;
+        }
+    }
+  }
+
+    $error = true;
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -32,67 +76,65 @@
                                 <div class="col-lg-7">
                                     <h3 class="text-center">Form Pengajuan Pelayanan</h3>
                                     <hr>
-                                    <form action="" class="p-1">
+                                    
+                                    <form action="" class="p-1" method="POST">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="nik">NIK</label>
-                                                <input type="number" name="nik" id="nik" placeholder=""
-                                                    class="form-control">
+                                                <label for="nik">NIK</label>                                                   
+                                                <input type="number" name="nik" id="nik" placeholder="Masukkan NIK Anda"
+                                                class="form-control">                                                
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="no_kk">KK</label>
-                                                <input type="number" name="no_kk" id="no_kk" placeholder=""
-                                                    class="form-control">
+                                                <input type="number" name="kk" id="kk" placeholder=""
+                                                    class="form-control" disabled>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="nama">Nama</label>
-                                            <input type="text" name="nama" id="nama" placeholder=""
-                                                class="form-control">
-                                        </div>
+                                            <div class="form-group">
+                                                <label for="nama">Nama</label>
+                                                <input type="text" name="nama"  id="nama"  class="form-control" disabled>
+                                            </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-4">
-
-                                                <label for="jk">Jenis Kelamin</label>
-                                                <select name="jk" id="jk" class="form-control">
-                                                    <option value="">-</option>
-                                                    <option value="">Laki-laki</option>
-                                                </select>
+                                                <label for="jk">Jenis Kelamin</label>                                                
+                                                <input type="text" name="jk" id="jk"
+                                                    class="form-control" disabled>
                                             </div>
                                             <div class="form-group col-md-4">
-                                                <label for="lahir">Tempat Lahir</label>
-                                                <input type="text" name="lahir" id="lahir" placeholder=""
-                                                    class="form-control">
+                                                <label for="tmp_lahir">Tempat Lahir</label>
+                                                <input type="text" name="tmp_lahir" id="tmp_lahir" placeholder=""
+                                                    class="form-control" disabled>
                                             </div>
                                             <div class="form-group col-md-4">
-                                                <label for="username">Tanggal Lahir</label>
+                                                <label for="tgl_lahir">Tanggal Lahir</label>
                                                 <input type="date" name="tgl_lahir " id="tgl_lahir" placeholder=""
-                                                    class="form-control">
+                                                    class="form-control" disabled>
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-8">
                                                 <label for="alamat">Alamat</label>
-                                                <input name="alamat" id="alamat" rows="5" class="form-control">
+                                                <input name="alamat" id="alamat" rows="5" class="form-control" disabled>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label for="rt">RT</label>
                                                 <input type="text" name="rt" id="rt" placeholder=""
-                                                    class="form-control">
+                                                    class="form-control" disabled>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label for="rw">RW</label>
                                                 <input type="text" name="rw" id="rw" placeholder=""
-                                                    class="form-control">
+                                                    class="form-control" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="keperluan">Keperluan</label>
                                             <textarea name="keperluan" id="keperluan" rows="6" class="form-control"
-                                                placeholder="Tulis keperluan Anda. contoh: Perekaman e-KTP"></textarea>
+                                                placeholder="contoh: Perekaman e-KTP" required></textarea>
                                         </div>
-                                    </form>
                                     <button type="sumbit" name="kirim" class="btn btn-success">Kirim</button>
+                                    <button type="reset" name="reset" class="btn btn-danger">Reset</button>
+                                    </form>
 
                                 </div>
                                 <div class="col-lg-5 d-none d-lg-block">
@@ -134,25 +176,6 @@
                 <hr class="clearfix w-100 d-md-none pb-3">
 
 
-                <!-- <div class="col-md-3 mb-md-0 mb-3">
-
-        
-          <h5 class="text-uppercase">Links</h5>
-
-          <ul class="list-unstyled">
-            <li>
-              <a href="#">Home</a>
-            </li>
-            <li>
-              <a href="#!">Pelayanan</a>
-            </li>
-            <li>
-              <a href="#!">Riwayat</a>
-            </li>
-          </ul>
-
-        </div> -->
-                <!-- Grid column -->
 
                 <!-- Grid column -->
                 <div class="col-md-4 mb-md-0 mb-3">
@@ -188,76 +211,123 @@
         <!-- Copyright -->
 
     </footer>
-    <!-- Footer -->
 
-    <!-- FOOTER
-  <footer class="sticky-footer bg-dark">
-    <div class="container">
-      <p class="text-white-50 mt-1">&copy; 2017-2020 Pemerintah Desa Sukodono &middot; <a href="#">Privacy</a>
-        &middot; <a href="#">Terms</a></p>
-    </div>
-    <p class="float-right text-white"><a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-      </a></p>
-  </footer> -->
 
-    <!-- Modal -->
-    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!--Login-->
+
+  <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="text-center modal-header">
-          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Login</h5>
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer text-center d-flex justify-content-center">
-          <button type="button" class="btn btn-outline-secondary">Login</button>
+        <?php if(isset($error)): ?>
+          <p style="color:red; font-style:italic; text-align:center">Username / Password salah</p>
+        <?php endif; ?>
+        <div class="modal-body mx-3 mb-4">
+          <form class="user" method="POST">
+            <div class="form-group">
+              <!-- <div class="input-group-prepend">
+                <i class="fas fa-envelope input-group-text grey-text pt-3"></i>
+              </div> -->
+              <input type="text" class="form-control form-control-user" placeholder="Username" name="username">
+            </div>
+            <div class="form-group">
+              <!-- <div class="input-group-prepend">
+                <i class="fas fa-lock input-group-text grey-text pt-3"></i>
+              </div> -->
+              <input type="password" class="form-control form-control-user" placeholder="Password" name="password">
+            </div>
+            <hr><br>
+            <button type="submit" name="login" class="btn btn-dark btn-user btn-block">Login</button>
+          
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
+
+   
+  <!-- Bootstrap core JavaScript-->
+  <script src="assets/vendor/jquery/jquery.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="assets/js/sb-admin-2.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    $("#nik").change(function(){
+        let nik = $('#nik').val();
+        $.ajax({
+            method: "GET",
+            url: "load.php",
+            data: {nik: nik}
+        }).done(function(data){
+            let obj = JSON.parse(data);
+            $('#nama').val(obj.nama);
+            $('#kk').val(obj.kk);
+            $('#jk').val(obj.jk);
+            $('#tmp_lahir').val(obj.tmp_lahir);
+            $('#tgl_lahir').val(obj.tgl_lahir);
+            $('#alamat').val(obj.alamat);
+            $('#rt').val(obj.rt);
+            $('#rw').val(obj.rw);
+
+        });
+    })
+});
+</script>
+
+<script>
+$(document).ready(function(){
+    var data = "suggest.php";
+    $("#nama").autocomplete({
+        source: data
+    });
+});
+</script>
+
+</body>
+
+</html>
 
 
-    <!--Modal1-->
+<?php 
 
-    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body mx-3 mb-4">
-                    <form action="" class="user">
-                        <div class="form-group input-group">
-                            <div class="input-group-prepend">
-                                <i class="fas fa-envelope input-group-text grey-text pt-3"></i>
-                            </div>
-                            <input type="text" class="form-control form-control-user" placeholder="Username">
-                        </div>
-                        <div class="form-group input-group">
-                            <div class="input-group-prepend">
-                                <i class="fas fa-lock input-group-text grey-text pt-3"></i>
-                            </div>
-                            <input type="password" class="form-control form-control-user" placeholder="Password">
-                        </div>
-                        <hr><br>
-                        <button class="btn btn-dark btn-user btn-block">Login</button>
-                    </form>
-                </div>
-                <!-- <div class="modal-footer d-flex justify-content-center">
-          <button class="btn btn-dark btn-user p-2">Login</button>
-        </div> -->
-            </div>
-        </div>
-    </div>
+$nik        = $_POST['nik'];
+$keperluan  = $_POST['keperluan'];
+$status     = "pending";
+$karakter   = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
+$kode_acak  = substr(str_shuffle($karakter),0,5);
 
-<?php include('inc/footer.php'); ?>
+if (isset($_POST['kirim'])) {
+
+    $sql_nik = $conn->query("SELECT * FROM tb_penduduk WHERE nik='$nik'");
+    $data = $sql_nik->fetch_assoc();
+    $nik = $data['id_warga'];
+    
+    
+    $sql = $conn->query("INSERT INTO tb_pengajuan (id_warga, pengajuan, status, kode)
+        values('$nik',
+                '$keperluan',
+                '$status',
+                '$kode_acak')");
+
+    if ($sql) {
+        ?>
+        <script>
+            alert("Pengajuan berhasil ditambahkan");
+            window.location.href="pengajuan.php";        
+        </script>
+        <?php 
+    }
+}
+
+?>

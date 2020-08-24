@@ -378,6 +378,9 @@
               $kd_pos     = $_POST['kode_pos'];
               $status_kk  = $_POST['status_kk'];
 
+              
+
+
 
               $tambah = $conn->query("INSERT INTO tb_penduduk (nik, kk, nama, jk, tmp_lahir, tgl_lahir, agama, negara, gol_darah, status_kawin, alamat, rt, rw, desa, status_kk, pekerjaan, kode_pos) VALUES 
               ('$nik',

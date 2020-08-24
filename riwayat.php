@@ -1,3 +1,47 @@
+<?php 
+
+session_start();
+include('inc/config.php');
+
+error_reporting(E_ALL ^(E_NOTICE | E_WARNING));
+
+if (isset($_POST["login"])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $query = $conn->query("SELECT * FROM tb_user WHERE username='$username'");
+
+    //cek username
+    if (mysqli_num_rows($query) > 0) {
+        
+        //cek password
+        $row = mysqli_fetch_assoc($query);
+        if (password_verify($password, $row["password"])) {
+            
+          $_SESSION['login'] = true;
+          if ($row['level'] == "petugas") {
+            $_SESSION['username'] = $username;
+            $_SESSION['nama'] = $row['nama'];
+            $_SESSION['level'] = "petugas";
+            
+            header('location:admin/index.php');
+            exit;
+          } elseif ($row['level'] == "admin") {
+            $_SESSION['username'] = $username;
+            $_SESSION['nama'] = $row['nama'];
+            $_SESSION['level'] = "admin";
+                      
+            header('location:admin/index.php');
+            exit;
+        }
+    }
+  }
+
+    $error = true;
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -187,7 +231,7 @@
   </div> -->
 
 
-  <!--Modal1-->
+  <!--Login-->
 
   <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
@@ -199,27 +243,27 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <?php if(isset($error)): ?>
+          <p style="color:red; font-style:italic; text-align:center">Username / Password salah</p>
+        <?php endif; ?>
         <div class="modal-body mx-3 mb-4">
-          <form action="" class="user">
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
+          <form class="user" method="POST">
+            <div class="form-group">
+              <!-- <div class="input-group-prepend">
                 <i class="fas fa-envelope input-group-text grey-text pt-3"></i>
-              </div>
-              <input type="text" class="form-control form-control-user" placeholder="Username">
+              </div> -->
+              <input type="text" class="form-control form-control-user" placeholder="Username" name="username">
             </div>
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
+            <div class="form-group">
+              <!-- <div class="input-group-prepend">
                 <i class="fas fa-lock input-group-text grey-text pt-3"></i>
-              </div>
-              <input type="password" class="form-control form-control-user" placeholder="Password">
+              </div> -->
+              <input type="password" class="form-control form-control-user" placeholder="Password" name="password">
             </div>
             <hr><br>
-            <button class="btn btn-dark btn-user btn-block">Login</button>
-          </form>
+            <button type="submit" name="login" class="btn btn-dark btn-user btn-block">Login</button>
+          
         </div>
-        <!-- <div class="modal-footer d-flex justify-content-center">
-          <button class="btn btn-dark btn-user p-2">Login</button>
-        </div> -->
       </div>
     </div>
   </div>

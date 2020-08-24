@@ -5,13 +5,15 @@ include('inc/config.php');
 if (isset($_POST['daftar'])) {
     $username = $_POST['username'];
     $nama     = $_POST['nama'];
+    $level    = $_POST['level'];
 
     //enkripsi password
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-    $sql = $conn->query("INSERT INTO tb_user (username, password, nama) VALUES(        
+    $sql = $conn->query("INSERT INTO tb_user (username, password, nama, level) VALUES(        
         '$username',
         '$password',
-        '$nama'
+        '$nama',
+        '$level'
     )");
 
     if ($sql) {
@@ -48,15 +50,21 @@ if (isset($_POST['daftar'])) {
     <form action="" method="POST">
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" placeholder="Username" class="form-control">
+            <input type="text" name="username" id="username" placeholder="Username" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="Password" class="form-control">
+            <input type="password" name="password" id="password" placeholder="Password" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="nama">Nama Lengkap</label>
-            <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama Lengkap">
+            <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama Lengkap" required>
+        </div>
+        <div class="form-group">
+            <select name="level" class="form-control" required>
+               <option value="petugas">Petugas</option>
+               <option value="admin">Admin</option>
+            </select>
         </div>
         <button type="submit" name="daftar" class="btn btn-success">Daftar</button>
     </form>

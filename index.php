@@ -1,6 +1,9 @@
  <?php 
 
+session_start();
 include('inc/config.php');
+
+error_reporting(E_ALL ^(E_NOTICE | E_WARNING));
 
 if (isset($_POST["login"])) {
     $username = $_POST['username'];
@@ -15,10 +18,24 @@ if (isset($_POST["login"])) {
         $row = mysqli_fetch_assoc($query);
         if (password_verify($password, $row["password"])) {
             
+          $_SESSION['login'] = true;
+          if ($row['level'] == "petugas") {
+            $_SESSION['username'] = $username;
+            $_SESSION['nama'] = $row['nama'];
+            $_SESSION['level'] = "petugas";
+            
+            header('location:admin/index.php');
+            exit;
+          } elseif ($row['level'] == "admin") {
+            $_SESSION['username'] = $username;
+            $_SESSION['nama'] = $row['nama'];
+            $_SESSION['level'] = "admin";
+                      
             header('location:admin/index.php');
             exit;
         }
     }
+  }
 
     $error = true;
 }
@@ -67,19 +84,48 @@ if (isset($_POST["login"])) {
                   <div class="p-5">
                     <div class="text-center">
                       <h1 class="h3 text-gray-900 mb-2">Selamat Datang!</h1>
-                      <h3 class="h4 text-gray-900 mb-3">Silahkan Masukkan <strong>NIK</strong> Anda untuk pengajuan
-                        pelayanan online.
+                      <h3 class="h4 text-gray-900 mb-3">Silahkan Masukkan <strong>NIK</strong> Anda untuk pengecekan
+                        data Anda.
                       </h3>
                     </div>
-                    <form class="user">
+                      <?php 
+                      
+                      $nik = $_POST['nik'];
+                      
+                      if (isset($_POST['cari'])) {
+                        
+                        $sql = $conn->query("SELECT* FROM tb_penduduk WHERE nik='$nik'");
+                        $data = $sql->fetch_assoc();
+                        
+                        if (mysqli_num_rows($sql) == 0) {
+                          
+                          $gagal = true;
+                        }
+                      }
+                      ?>
+                    <?php if(isset($gagal)): ?>                      
+                      <div class="alert alert-danger">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                      Data tidak ditemukan, mohon periksa kembali</div>
+                    <?php endif; ?>
+                    <form action="" class="user" method="POST">
                       <div class="form-group">
-                        <input type="number" class="form-control form-control-user" placeholder="Masukkan NIK Anda">
+                        <input type="number" name="nik" id="nik" class="form-control form-control-user" placeholder="Masukkan NIK Anda">
                       </div>
-                      <a href="#" class="btn btn-dark btn-user btn-block">
+                      <button type="submit" name="cari" class="btn btn-dark btn-user btn-block" >
                         Submit
+                      </button>
+                      <a href="pengajuan.php" class="btn btn-success btn-user btn-block">
+                        Permohonan
                       </a>
 
-                    </form>
+                      <div class="text-center">
+                      <?= $data['nik'];?>
+                      <?= $data['nama']; ?>
+                      </div>
+
+                    </form>                      
+
                     <hr>
                     <div class="text-center">
                       Belum terdaftar? <br> Silahkan Registrasi
@@ -246,7 +292,7 @@ if (isset($_POST["login"])) {
 
   </footer>
 
-  <!--Modal1-->
+  <!--Login-->
 
   <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
@@ -282,6 +328,7 @@ if (isset($_POST["login"])) {
       </div>
     </div>
   </div>
+
 
   <?php include('inc/footer.php'); ?>
 
