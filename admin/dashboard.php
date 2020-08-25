@@ -47,12 +47,12 @@
     <div class="card-body">
       <div class="row no-gutters align-items-center">
         <div class="col mr-2">
-          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Setujui</div>
+          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Konfirmasi</div>
           <div class="row no-gutters align-items-center">
           <div class="col mr-2">
             
             <?php 
-            $sql = mysqli_fetch_array($conn->query("SELECT COUNT(*) FROM tb_pengajuan WHERE status = 'setuju'"))[0];
+            $sql = mysqli_fetch_array($conn->query("SELECT COUNT(*) FROM tb_pengajuan WHERE status = 'konfirmasi'"))[0];
             echo "<div class='h5 mb-0 font-weight-bold text-gray-800'>".$sql."</div>";
             ?>
             </div>
@@ -74,7 +74,7 @@
         <div class="col mr-2">
           <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Selesai</div>
           <?php 
-            $sql = mysqli_fetch_array($conn->query("SELECT COUNT(*) FROM tb_pengajuan WHERE status = 'selesai'"))[0];
+            $sql = mysqli_fetch_array($conn->query("SELECT COUNT(*) FROM tb_pengajuan WHERE status = 'ttd'"))[0];
             echo "<div class='h5 mb-0 font-weight-bold text-gray-800'>".$sql."</div>";
             ?>
             </div>

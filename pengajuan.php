@@ -74,9 +74,47 @@ if (isset($_POST["login"])) {
                         <div class="card-body p-0">
                             <div class="row">
                                 <div class="col-lg-7">
+
+                                <?php 
+
+                                    $nik        = $_POST['nik'];
+                                    $keperluan  = $_POST['keperluan'];
+                                    $status     = "pending";
+                                    $karakter   = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
+                                    $kode_acak  = substr(str_shuffle($karakter),0,5);
+
+                                    if (isset($_POST['kirim'])) {
+
+                                        $sql_nik = $conn->query("SELECT * FROM tb_penduduk WHERE nik='$nik'");
+                                        $data = $sql_nik->fetch_assoc();
+                                        $nik = $data['id_warga'];
+                                        
+                                        
+                                        $sql = $conn->query("INSERT INTO tb_pengajuan (id_warga, pengajuan, status, kode)
+                                            values('$nik',
+                                                    '$keperluan',
+                                                    '$status',
+                                                    '$kode_acak')");
+
+                                        if ($sql) {
+                                            $pesan = true;
+                                        }
+                                    }
+
+                                    ?>
+
+
                                     <h3 class="text-center">Form Pengajuan Pelayanan</h3>
                                     <hr>
-                                    
+                                    <?php if(isset($pesan)): ?>
+
+                                        <div class="alert alert-success" role="alert"><strong class="h3">Selamat,</strong> Pengajuan Anda berhasil dibuat.
+                                        <p>Ini adalah nomor Registrasi Anda <strong><?= $kode_acak; ?></strong>. Harap disimpan!</p></div>
+                                    <?php endif; ?>
+                                    <!-- <?php if(isset($pesan)): ?> -->
+                                        <!-- <p style="color:red; font-style:italic; text-align:center">Username / Password salah</p> -->
+                                    <!-- <div class='alert alert-danger' role='alert'>Phasparse yang Anda Masukkan salah <?=$kode_acak  = substr(str_shuffle($karakter),0,5); ?></div>
+                                    <?php endif; ?> -->
                                     <form action="" class="p-1" method="POST">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
@@ -299,35 +337,5 @@ $(document).ready(function(){
 </html>
 
 
-<?php 
 
-$nik        = $_POST['nik'];
-$keperluan  = $_POST['keperluan'];
-$status     = "pending";
-$karakter   = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
-$kode_acak  = substr(str_shuffle($karakter),0,5);
 
-if (isset($_POST['kirim'])) {
-
-    $sql_nik = $conn->query("SELECT * FROM tb_penduduk WHERE nik='$nik'");
-    $data = $sql_nik->fetch_assoc();
-    $nik = $data['id_warga'];
-    
-    
-    $sql = $conn->query("INSERT INTO tb_pengajuan (id_warga, pengajuan, status, kode)
-        values('$nik',
-                '$keperluan',
-                '$status',
-                '$kode_acak')");
-
-    if ($sql) {
-        ?>
-        <script>
-            alert("Pengajuan berhasil ditambahkan");
-            window.location.href="pengajuan.php";        
-        </script>
-        <?php 
-    }
-}
-
-?>

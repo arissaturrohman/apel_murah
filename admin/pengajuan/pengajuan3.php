@@ -8,6 +8,7 @@
                   <thead>
                   <tr>
                       <th>No</th>
+                      <th>Kode</th>
                       <th>NIK</th>
                       <th>No KK</th>
                       <th>Status Keluarga</th>
@@ -43,6 +44,7 @@
 
                     <tr>
                       <td><?= $no++; ?></td>
+                      <td style="font-weight:bold;"><?= $data['kode']; ?></td>
                       <td>
                       <?php
                        $warga_id = $data['id_warga'];
@@ -109,31 +111,12 @@
                     <div class="form-group">
                     <input type="hidden" class="form-control " name="id_pengajuan" value="<?= $data_ubah['id_pengajuan']?>">
                     </div>
-                      <div class="form-group">
-                      <!-- <?php 
-                      $warga_id = $data_ubah['id_warga'];
-                      $sql_warga = $conn->query("SELECT * FROM tb_penduduk WHERE id_warga='$warga_id'");
-                      while ($data_warga = $sql_warga->fetch_assoc()) {
-                       
-                      ?>
-                      <input type="number" class="form-control " name="nik" value="<?= $data_warga['nik']?>" readonly>
-                      </div>
-                      <div class="form-group">
-                        <input type="number" class="form-control " name="kk" value="<?= $data_warga['kk']?>" readonly>
-                      </div>                      
-                      <div class="form-group">
-                        <input type="text" class="form-control " name="nama" value="<?= $data_warga['nama']?>" readonly>
-                      </div>
-                      <?php } ?> -->
-                      <!-- <div class="form-group">
-                      <label for="pengajuan">Keperluan :</label>
-                      <textarea name="pengajuan" rows="3" class="form-control"><?= $data_ubah['pengajuan']?></textarea>
-                      </div> -->
+                      
                       <div class="form-group">
                         <input type="number" class="form-control " name="nik" value="<?= $_SESSION['nik']?>" readonly>
                       </div>                      
                       <div class="form-group">
-                        <input type="text" class="form-control " name="kode" required>
+                        <input type="text" class="form-control " name="kode" required autocomplete="off">
                       </div>
                       <hr>
                       
@@ -142,7 +125,7 @@
                     </form>
                   </div>
                   <?php
-                  $error = true;
+                  // $error = true;
                 
                 if (isset($_POST['ubah'])) {
                   $id_ubah    = $_POST['id_pengajuan'];
@@ -155,14 +138,18 @@
                   // if ($ubah) {
                   //   ?>
                       <script>
-                      alert("Data berhasil diterima");
-                      window.location.href="?page=pengajuan";
+                      alert("Data berhasil ditandatangani");
+                      window.location.href="?page=pengajuan3";
                       </script>
                     <?php
                   } 
                   else {
                     // sampai disini belum clear
-                    $error = " <div class='alert alert-danger' role='alert'>Phasparse yang Anda Masukkan salah</div>";
+                    echo "
+                    <script>
+                    alert('Phasparse yang anda masukkan salah!');
+                    window.location.href='?page=pengajuan3';
+                    </script>";
                   }
                     }
                   

@@ -12,6 +12,8 @@ if (isset($_GET['page'])) {
         include "pengajuan/pengajuan2.php";
     } elseif ($_GET['page']=='pengajuan3') {
         include "pengajuan/pengajuan3.php";
+    } elseif ($_GET['page']=='pengajuan4') {
+        include "pengajuan/pengajuan4.php";
     } elseif ($_GET['page']=='pengguna') {
         include "pengguna/pengguna.php";
     }

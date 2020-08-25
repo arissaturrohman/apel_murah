@@ -90,6 +90,7 @@ if ($level) {
         ?>
           <a class="collapse-item" href="?page=pengajuan1">Diterima</a>
           <a class="collapse-item" href="?page=pengajuan2">Konfirmasi</a>
+          <a class="collapse-item" href="?page=pengajuan4">Selesai</a>
       </div>
     </div>
 </li>

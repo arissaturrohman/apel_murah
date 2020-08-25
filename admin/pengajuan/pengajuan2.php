@@ -8,6 +8,7 @@
                   <thead>
                   <tr>
                       <th>No</th>
+                      <th>Kode</th>
                       <th>NIK</th>
                       <th>No KK</th>
                       <th>Status Keluarga</th>
@@ -43,6 +44,7 @@
 
                     <tr>
                       <td><?= $no++; ?></td>
+                      <td style="font-weight:bold;"><?= $data['kode']; ?></td>
                       <td>
                       <?php
                        $warga_id = $data['id_warga'];

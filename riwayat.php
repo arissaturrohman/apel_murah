@@ -76,18 +76,100 @@ if (isset($_POST["login"])) {
             <div class="card-body p-0">
               <div class="row">
                 <div class="col-lg-7 my-2 pt-2 pl-3">
-                  <form action="" class="user">
+                  <form action="riwayat_lacak.php" class="user" method="POST">
                     <div class="form-row">
+                      <?php 
+                      $lacak = "";
+                      if (isset($lacak)) {
+                        $lacak = $_POST['lacak'];
+                        
+                      } 
+
+                      
+                      ?>
                       <div class="form-group col-md-6">
-                        <input type="number" name="lacak" id="lacak" placeholder="Masukkan NIK Anda"
-                          class="form-control form-control-user">
+                        <input type="text" name="lacak" value="<?= $lacak; ?>" placeholder="Masukkan Nomor Registrasi Anda"
+                          class="form-control form-control-user" autocomplete="off" required autofocus>
                       </div>
                       <div class="form-group col-md-6">
                         <button type="submit" class="btn btn-success btn-user">Lacak</button>
                       </div>
                     </div>
                   </form>
-                  <h3 class="mb-5">Lihat Pengajuan Surat Anda.</h3>
+
+                  <?php 
+                  
+                  // $pending = "pending";
+                  $lacak = $_POST['lacak'];
+                  if (isset($_POST['lacak'])) {
+
+                    $sql = $conn->query("SELECT * FROM tb_pengajuan WHERE kode='$lacak'");
+                    $data = $sql->fetch_assoc();
+
+                    if ($data['status'] == 'pending') {
+                      
+                      echo"<h3 class='mb-5'>Lihat Pengajuan Surat Anda.</h3>";
+
+                      echo"<i class='fas fa-edit pr-3 text-success' style='font-size: 13vh;'></i>";
+
+                      echo"<i class='fas fa-angle-right pr-2' style='font-size: 8vh;'></i>";
+
+                      echo"<i class='fas fa-trash pr-3 pl-3' style='font-size: 13vh;'></i>";
+
+                      echo"<i class='fas fa-angle-right pr-3 pl-3' style='font-size: 8vh;'></i>";
+
+                      echo"<i class='fas fa-user pr-3 pl-3' style='font-size: 13vh;'></i>";
+
+                      echo"<i class='fas fa-angle-right pr-3 pl-3' style='font-size: 8vh;'></i>";
+
+                      echo"<i class='fas fa-folder-open pr-3 pl-3' style='font-size: 13vh;'></i>";
+
+                      echo"<h4 class='mt-4'>Status Pengajuan Surat Pengantar Anda : ".$data['status']; ".</h4>";
+                    }
+                    if ($data['status'] == 'diterima') {
+                      
+                      echo"<h3 class='mb-5'>Lihat Pengajuan Surat Anda.</h3>";
+
+                      echo"<i class='fas fa-edit pr-3 text-success' style='font-size: 13vh;'></i>";
+
+                      echo"<i class='fas fa-angle-right pr-2 text-success' style='font-size: 8vh;'></i>";
+
+                      echo"<i class='fas fa-trash pr-3 pl-3 text-success' style='font-size: 13vh;'></i>";
+
+                      echo"<i class='fas fa-angle-right pr-3 pl-3' style='font-size: 8vh;'></i>";
+
+                      echo"<i class='fas fa-user pr-3 pl-3' style='font-size: 13vh;'></i>";
+
+                      echo"<i class='fas fa-angle-right pr-3 pl-3' style='font-size: 8vh;'></i>";
+
+                      echo"<i class='fas fa-folder-open pr-3 pl-3' style='font-size: 13vh;'></i>";
+
+                      echo"<h4 class='mt-4'>Status Pengajuan Surat Pengantar Anda : ".$data['status']; ".</h4>";
+                    }
+                    if ($data['status'] == 'konfirmasi') {
+                      
+                      echo"<h3 class='mb-5'>Lihat Pengajuan Surat Anda.</h3>";
+
+                      echo"<i class='fas fa-edit pr-3 text-success' style='font-size: 13vh;'></i>";
+
+                      echo"<i class='fas fa-angle-right pr-2 text-success' style='font-size: 8vh;'></i>";
+
+                      echo"<i class='fas fa-trash pr-3 pl-3 text-success' style='font-size: 13vh;'></i>";
+
+                      echo"<i class='fas fa-angle-right pr-3 pl-3 text-success' style='font-size: 8vh;'></i>";
+
+                      echo"<i class='fas fa-user pr-3 pl-3 text-success' style='font-size: 13vh;'></i>";
+
+                      echo"<i class='fas fa-angle-right pr-3 pl-3' style='font-size: 8vh;'></i>";
+
+                      echo"<i class='fas fa-folder-open pr-3 pl-3' style='font-size: 13vh;'></i>";
+
+                      echo"<h4 class='mt-4'>Status Pengajuan Surat Pengantar Anda : ".$data['status']; ".</h4>";
+                    } elseif(empty($lacak)) {
+                      # code...
+                    ?>
+                      <h3 class="mb-5">Lihat Pengajuan Surat Anda.</h3>
+
                   <i class="fas fa-edit pr-3" style="font-size: 13vh;"></i>
 
                   <i class="fas fa-angle-right pr-2" style="font-size: 8vh;"></i>
@@ -102,7 +184,34 @@ if (isset($_POST["login"])) {
 
                   <i class="fas fa-folder-open pr-3 pl-3" style="font-size: 13vh;"></i>
 
-                  <h4 class="mt-4">Status Pengajuan Surat Pengantar Anda :</h4>
+                  <h4 class="mt-4">Status Pengajuan Surat Pengantar Anda : <?= $data["status"]; ?></h4>
+
+                    <?php }
+
+                    // 24qNs
+
+                    // if (mysqli_num_rows($sql) > 0) {
+                    //   # code...
+                    // }
+                  }
+                  ?>
+                  <h3 class="mb-5">Lihat Pengajuan Surat Anda.</h3>
+
+                  <i class="fas fa-edit pr-3" style="font-size: 13vh;"></i>
+
+                  <i class="fas fa-angle-right pr-2" style="font-size: 8vh;"></i>
+
+                  <i class="fas fa-trash pr-3 pl-3" style="font-size: 13vh;"></i>
+
+                  <i class="fas fa-angle-right pr-3 pl-3" style="font-size: 8vh;"></i>
+
+                  <i class="fas fa-user pr-3 pl-3" style="font-size: 13vh;"></i>
+
+                  <i class="fas fa-angle-right pr-3 pl-3" style="font-size: 8vh;"></i>
+
+                  <i class="fas fa-folder-open pr-3 pl-3" style="font-size: 13vh;"></i>
+
+                  <h4 class="mt-4">Status Pengajuan Surat Pengantar Anda : <?= $data["status"]; ?></h4>
 
                 </div>
                 <div class="col-lg-5 d-none d-lg-block">
@@ -116,7 +225,7 @@ if (isset($_POST["login"])) {
 
       </div>
     </div>
-    </div><!-- /.container -->
+    </div> <!-- /.container -->
 
   </main>
 
@@ -141,28 +250,7 @@ if (isset($_POST["login"])) {
         <!-- Grid column -->
 
         <hr class="clearfix w-100 d-md-none pb-3">
-
-
-        <!-- <div class="col-md-3 mb-md-0 mb-3">
-
         
-          <h5 class="text-uppercase">Links</h5>
-
-          <ul class="list-unstyled">
-            <li>
-              <a href="#">Home</a>
-            </li>
-            <li>
-              <a href="#!">Pelayanan</a>
-            </li>
-            <li>
-              <a href="#!">Riwayat</a>
-            </li>
-          </ul>
-
-        </div> -->
-        <!-- Grid column -->
-
         <!-- Grid column -->
         <div class="col-md-4 mb-md-0 mb-3">
 
@@ -196,39 +284,6 @@ if (isset($_POST["login"])) {
     <!-- Copyright -->
 
   </footer>
-  <!-- Footer -->
-
-  <!-- FOOTER
-  <footer class="sticky-footer bg-dark">
-    <div class="container">
-      <p class="text-white-50 mt-1">&copy; 2017-2020 Pemerintah Desa Sukodono &middot; <a href="#">Privacy</a>
-        &middot; <a href="#">Terms</a></p>
-    </div>
-    <p class="float-right text-white"><a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-      </a></p>
-  </footer> -->
-
-  <!-- Modal -->
-  <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="text-center modal-header">
-          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Login</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer text-center d-flex justify-content-center">
-          <button type="button" class="btn btn-outline-secondary">Login</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
 
 
   <!--Login-->
