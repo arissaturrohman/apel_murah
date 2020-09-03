@@ -27,7 +27,8 @@
                       <th>Kode Pos</th>
                       <th>Pengajuan</th>
                       <th>Status</th>
-                      <th>QR CODE</th>
+                      <th>QR Code</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -35,7 +36,7 @@
                     <?php 
                     
                     $no = 1;
-                    
+                    // $id = $_POST['id_pengajuan'];
                     $tampil = $conn->query("SELECT * FROM tb_pengajuan WHERE status='ttd'");
                     while($data=$tampil->fetch_assoc()){
                       
@@ -74,6 +75,13 @@
                       <td>
                         <!-- QR Code -->
 
+                      </td>
+                      <td>
+                      <form action="../cetak.php?id=<?php echo $data['id_pengajuan']; ?>" method="POST">
+                      <input type="hidden" name="pengajuan" value="<?php echo $data['id_pengajuan']; ?>">
+                      <!-- <button type="submit" target="_blank">Cetak</button> -->
+                      <a href="../cetak.php?id=<?php echo $data['id_pengajuan']; ?>" type="submit" target="_blank" class="btn btn-success">Cetak</a>
+                      </form>
                       </td>
                     </tr>
 
