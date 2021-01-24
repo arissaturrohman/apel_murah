@@ -8,6 +8,7 @@ if(!isset($_SESSION["login"])){
 
 include('../inc/config.php');
 include('../inc/tgl_indo.php');
+include('../assets/phpqrcode/qrlib.php');
 
 error_reporting(E_ALL ^(E_NOTICE | E_WARNING));
 

@@ -108,13 +108,13 @@ if (isset($_POST["login"])) {
                     $data = $sql->fetch_assoc();
 
                     //folder
-                    $folder = "qr_code/";
+                    $folder = "qr_code/lacak/";
 
                     //isi qrcode jika di scan
-                    $konten = $data['kode'];
+                    $namaQR = $data['kode'];
 
                     //ekstensi file
-                    $ekstensi = $konten.".png";
+                    $ekstensi = $namaQR.".png";
 
                     //Level
                     $level = QR_ECLEVEL_H;
@@ -125,7 +125,10 @@ if (isset($_POST["login"])) {
                     //ukuran frame
                     $frame = 4;
 
-                    QRcode::png($konten, $folder.$ekstensi, $level, $ukuran, $frame);
+                    // $namaQR     = $data['kode'];
+                    $QR         = 'http://localhost/apel_murah/pdf/'.$namaQR.'.pdf';
+
+                    QRCode::png($QR,$folder.$QR, $level, $ukuran, $frame);
 
 
                     if ($data['status'] == 'pending') {
@@ -210,8 +213,10 @@ if (isset($_POST["login"])) {
                       echo"<p>Menunggu ditandatangani oleh Kepala Desa.</p>";
                     }
                     if ($data['status'] == 'ttd') {
-                      
-                      echo"<img src=".$folder.$ekstensi."/>";
+
+                      echo "Selamat Pengajuan Anda telah di Tandatangani oleh Kepala Desa Sukodono";
+                      echo "<img src=".'qr_code/'.$data['qr_code']. "><br>";
+                      echo "Silahkan scan QR Code diatas.";
 
                     } elseif (mysqli_num_rows($sql) == 0) {
                       # code...
@@ -289,7 +294,7 @@ if (isset($_POST["login"])) {
     <!-- Copyright -->
     <div class="footer-copyright text-white-50 text-center py-3">&copy; 2019-2020 Pemerintah Desa Sukodono | created by
       :
-      <a href="https://github.com/arissaturrohman">Nang Aris</a>
+      <!-- <a href="https://github.com/arissaturrohman">Nang Aris</a> -->
       <p class="float-right text-white"><a class="scroll-to-top rounded" href="#page-top">
           <i class="fas fa-angle-up"></i>
         </a></p>

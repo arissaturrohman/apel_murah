@@ -164,7 +164,6 @@ ob_start();
         </tr>
       </table>
       <!-- </form> -->
-        <?php } ?>
       <br />
       <p>Demikian Suat Keterangan ini dibuat untuk digunakan seperlunya.</p>
       <p style="margin-left:65%; margin-bottom:0px">Dibuat di : Sukodono</p>
@@ -175,8 +174,14 @@ ob_start();
             <td style="width: 30%;"></td>
             <td>Kepala Desa Sukodono</td>
           </tr>
-          <tr style="height:60px;">
-            <td style="height:60px;"></td>
+          <tr>
+            <td>
+              <p>ttd</p>
+            </td>
+            <td></td>
+            <td>
+            <img src="qr_code/<?= $data['qr_code']; ?>" width="20%">            
+            </td>
           </tr>         
           <tr>
             <td>( Lisnawati )</td>
@@ -184,14 +189,8 @@ ob_start();
             <td>( Arissatur Rohman )</td>
           </tr>
       </table>
-    <br /><br><br>
-      <!-- <table style="margin-left: auto; margin-right: auto; text-align: center;">
-        <tr>
-            <td>( Lisnawati )</td>
-            <td style="width:50%"></td>
-            <td>( Arissatur Rohman )</td>
-          </tr>
-      </table> -->
+        <?php } ?>
+    <br />
 
     </body>
 </html>
@@ -202,5 +201,5 @@ ob_start();
  ob_end_clean();
  $mpdf->WriteHTML(utf8_encode($html));
  $mpdf->Output("pdf/$kode.pdf", 'F');
-//  $mpdf->Close();
+
 ?>

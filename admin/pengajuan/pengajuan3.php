@@ -129,14 +129,27 @@
                 
                 if (isset($_POST['ubah'])) {
                   $id_ubah    = $_POST['id_pengajuan'];
-                  $kode  = $_POST['kode'];
+                  $kode       = $_POST['kode'];
+                  $folder     = '../qr_code/';
+                  $type       = '.png';
+                  $quality    = QR_ECLEVEL_H;
+                  $ukuran     = 5;
+                  $padding    = 1;
                   $status     = 'ttd';
+                  
+                  $sql = $conn->query("SELECT * FROM tb_pengajuan WHERE id_pengajuan = '$id_pengajuan'");
+                  $data = $sql->fetch_assoc();
+                  $namaQR     = $data['kode'];
+                  $QR         = 'http://localhost/apel_murah/pdf/'.$namaQR.'.pdf';
+
+                  QRCode::png($QR,$folder.$namaQR.$type, $quality, $ukuran, $padding);
 
                   if ($kode == 'Apel20') {
                                       
-                  $ubah = $conn->query("UPDATE tb_pengajuan SET status ='$status' WHERE id_pengajuan='$id_ubah'");
-                  // if ($ubah) {
-                  //   ?>
+                  $ubah = $conn->query("UPDATE tb_pengajuan SET status ='$status', qr_code = '$namaQR$type' WHERE id_pengajuan='$id_ubah'");
+                  
+                  
+                  ?>
                       <script>
                       alert("Data berhasil ditandatangani");
                       window.location.href="?page=pengajuan3";
@@ -165,7 +178,7 @@
             </div>
             </div>
             
-            <button class="btn btn-info" data-toggle="modal" data-target="#modalTambahForm">Tambah</button>
+            <!-- <button class="btn btn-info" data-toggle="modal" data-target="#modalTambahForm">Tambah</button> -->
 
             
             <!-- modal tambah-->

@@ -73,14 +73,14 @@
                       <td><?= $data['pengajuan']; ?></td>
                       <td><?= $data['status']; ?></td>
                       <td>
-                        <!-- QR Code -->
+                        <img src="../qr_code/<?= $data['qr_code']; ?>" width="130%">
 
                       </td>
                       <td>
                       <form action="../cetak.php?id=<?php echo $data['id_pengajuan']; ?>" method="POST">
                       <input type="hidden" name="pengajuan" value="<?php echo $data['id_pengajuan']; ?>">
                       <!-- <button type="submit" target="_blank">Cetak</button> -->
-                      <a href="../cetak.php?id=<?php echo $data['id_pengajuan']; ?>" type="submit" target="_blank" class="btn btn-success">Cetak</a>
+                      <a href="../cetak.php?id=<?php echo $data['id_pengajuan']; ?>" onClick="javascript:window.close();" type="submit" target="_blank" class="btn btn-success">Cetak</a>
                       </form>
                       </td>
                     </tr>
@@ -125,14 +125,27 @@
                 
                 if (isset($_POST['ubah'])) {
                   $id_ubah    = $_POST['id_pengajuan'];
-                  $kode  = $_POST['kode'];
+                  $kode       = $_POST['kode'];
+                  $folder     = '../qr_code/';
+                  $type       = '.png';
+                  $quality    = QR_ECLEVEL_H;
+                  $ukuran     = 5;
+                  $padding    = 1;
                   $status     = 'ttd';
+                  
+                  $sql = $conn->query("SELECT * FROM tb_pengajuan WHERE id_pengajuan = '$id_pengajuan'");
+                  $data = $sql->fetch_assoc();
+                  $namaQR     = "http://localhost/apel_murah/pdf/".$data['kode'].'pdf';
+                  // $QR         = 'http://localhost/apel_murah/pdf/'.$namaQR.'.pdf';
+
+                  QRCode::png($namaQR,$folder.$namaQR, $quality, $ukuran, $padding);
 
                   if ($kode == 'Apel20') {
                                       
-                  $ubah = $conn->query("UPDATE tb_pengajuan SET status ='$status' WHERE id_pengajuan='$id_ubah'");
-                  // if ($ubah) {
-                  //   ?>
+                  $ubah = $conn->query("UPDATE tb_pengajuan SET status ='$status', qr_code = '$QR' WHERE id_pengajuan='$id_ubah'");
+                  
+
+                     ?>
                       <script>
                       alert("Data berhasil ditandatangani");
                       window.location.href="?page=pengajuan";
